@@ -1,0 +1,108 @@
+version: 2
+updates:
+  # Maintain dependencies for Gradle
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    target-branch: "develop"
+    labels:
+      - "dependencies"
+      - "automerge"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    reviewers:
+      - "project-maintainers"
+    assignees:
+      - "project-maintainers"
+    ignore:
+      # Ignore major version updates for these dependencies
+      - dependency-name: "com.android.tools.build:gradle"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "org.jetbrains.kotlin:kotlin-gradle-plugin"
+        update-types: ["version-update:semver-major"]
+
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "automerge"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    reviewers:
+      - "project-maintainers"
+    assignees:
+      - "project-maintainers"
+
+  # Maintain dependencies for npm (if using Node.js for any tooling)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "javascript"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    ignore:
+      # Ignore major version updates for dev dependencies
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+        dependency-type: "development"
+
+  # Security updates for all package ecosystems
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependencies"
+      - "security"
+    target-branch: "develop"
+    commit-message:
+      prefix: "security"
+      include: "scope"
+    reviewers:
+      - "security-team"
+    assignees:
+      - "security-team"
+
+# Global settings
+updates-security:
+  - auto-merge: true
+    conditions:
+      - "status-success=build"
+      - "status-success=test"
+      - "status-success=lint"
+      - "status-success=security"
+
+version-updates:
+  - auto-merge: true
+    conditions:
+      - "author=dependabot[bot]"
+      - "title~=^deps:"
+      - "status-success=build"
+      - "status-success=test"
+      - "status-success=lint"
+
+pull-request-branch-name:
+  separator: "-"
