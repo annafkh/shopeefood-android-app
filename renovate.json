@@ -1,0 +1,104 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":semanticCommits",
+    ":dependencyDashboard",
+    ":prHourlyLimit4",
+    ":rebaseStalePrs",
+    ":automergeMinor",
+    ":separateMajorReleases"
+  ],
+  "platform": "github",
+  "onboarding": false,
+  "repositories": ["shopeefood"],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "description": "Automatically merge minor and patch updates",
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "description": "Group Android dependencies",
+      "groupName": "Android dependencies",
+      "matchPackagePatterns": [
+        "^com.android.*",
+        "^androidx.*",
+        "^com.google.android.*"
+      ]
+    },
+    {
+      "description": "Group test dependencies",
+      "groupName": "Test dependencies",
+      "matchPackagePatterns": [
+        "^junit.*",
+        "^org.mockito.*",
+        "^org.robolectric.*",
+        "^androidx.test.*",
+        "^com.android.support.test.*"
+      ]
+    },
+    {
+      "description": "Group Kotlin dependencies",
+      "groupName": "Kotlin dependencies",
+      "matchPackagePatterns": [
+        "^org.jetbrains.kotlin.*",
+        "^org.jetbrains.kotlinx.*"
+      ]
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "assignees": ["@security-team"]
+  },
+  "schedule": [
+    "after 10pm every weekday",
+    "before 5am every weekday",
+    "every weekend"
+  ],
+  "prConcurrentLimit": 10,
+  "stabilityDays": 3,
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Dependencies Dashboard",
+  "dependencyDashboardLabels": ["dependencies", "dashboard"],
+  "branchPrefix": "renovate/",
+  "commitMessagePrefix": "chore(deps):",
+  "commitBody": "Signed-off-by: Renovate Bot <bot@renovateapp.com>",
+  "prBodyTemplate": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}{{{controls}}}{{{footer}}}",
+  "major": {
+    "automerge": false,
+    "labels": ["dependencies", "major"]
+  },
+  "minor": {
+    "labels": ["dependencies", "minor"]
+  },
+  "patch": {
+    "labels": ["dependencies", "patch"]
+  },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 5am on monday"]
+  },
+  "gradle": {
+    "fileMatch": [
+      "(^|/)build\\.gradle$",
+      "(^|/)build\\.gradle\\.kts$",
+      "(^|/)settings\\.gradle(\\.kts)?$",
+      "(^|/)gradle\\.properties$"
+    ]
+  },
+  "ignoreDeps": [
+    "com.android.tools.build:gradle",
+    "org.jetbrains.kotlin:kotlin-gradle-plugin"
+  ],
+  "ignorePaths": [
+    "**/test/**",
+    "**/androidTest/**",
+    "**/__tests__/**"
+  ],
+  "rangeStrategy": "bump",
+  "separateMinorPatch": true,
+  "prNotPendingHours": 24
+}
