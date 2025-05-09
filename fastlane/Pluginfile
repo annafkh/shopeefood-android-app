@@ -1,0 +1,49 @@
+# Fastlane Plugins
+# Update using: fastlane update_plugins
+
+# Firebase distribution
+gem 'fastlane-plugin-firebase_app_distribution'
+
+# Version management
+gem 'fastlane-plugin-increment_version_code'
+gem 'fastlane-plugin-android_version_manager'
+gem 'fastlane-plugin-versioning_android'
+
+# Release management
+gem 'fastlane-plugin-changelog'
+gem 'fastlane-plugin-release_notes'
+gem 'fastlane-plugin-commit_android_version_bump'
+
+# Asset management
+gem 'fastlane-plugin-badge'
+gem 'fastlane-plugin-appicon'
+gem 'fastlane-plugin-android_resource_modifier'
+
+# Testing
+gem 'fastlane-plugin-test_center'
+gem 'fastlane-plugin-automated_test_emulator_run'
+gem 'fastlane-plugin-instrumented_tests'
+gem 'fastlane-plugin-android_emulator'
+
+# Code quality
+gem 'fastlane-plugin-android_lint'
+gem 'fastlane-plugin-code_coverage_report'
+gem 'fastlane-plugin-sonar'
+
+# Notifications
+gem 'fastlane-plugin-slack_bot'
+gem 'fastlane-plugin-teams'
+gem 'fastlane-plugin-discord_notifier'
+
+# Build management
+gem 'fastlane-plugin-gradle_cache'
+gem 'fastlane-plugin-clean_build'
+gem 'fastlane-plugin-dependency_check_android'
+
+# Utility plugins
+gem 'fastlane-plugin-ruby'
+gem 'fastlane-plugin-yaml'
+gem 'fastlane-plugin-json'
+gem 'fastlane-plugin-jira_transition'
+gem 'fastlane-plugin-git_tags'
+gem 'fastlane-plugin-upload_to_browserstack'
