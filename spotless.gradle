@@ -1,0 +1,110 @@
+apply plugin: "com.diffplug.spotless"
+
+spotless {
+    java {
+        // Use the default Java formatting style
+        googleJavaFormat()
+        
+        // Remove unused imports
+        removeUnusedImports()
+        
+        // Sort imports
+        importOrder('java', 'javax', 'android', 'androidx', 'com', 'org', '')
+        
+        // Add license header
+        licenseHeader '''
+/*
+ * Copyright (c) $YEAR ShopeeFood. All rights reserved.
+ */
+'''
+        
+        // Target files
+        target 'src/*/java/**/*.java'
+        
+        // Exclude generated files
+        targetExclude 'src/*/java/**/BuildConfig.java', 'src/*/java/**/R.java'
+    }
+    
+    kotlin {
+        // Use the Kotlin style guide
+        ktlint()
+        
+        // Add license header
+        licenseHeader '''
+/*
+ * Copyright (c) $YEAR ShopeeFood. All rights reserved.
+ */
+'''
+        
+        // Target files
+        target '**/*.kt'
+        
+        // Exclude build files and tests
+        targetExclude 'build/**/*.kt', '**/test/**/*.kt', '**/androidTest/**/*.kt'
+    }
+    
+    format 'misc', {
+        // Enforce UTF-8 encoding
+        encoding 'UTF-8'
+        
+        // Target specific file types
+        target '**/*.md', '**/*.xml', '**/*.yml', '**/*.yaml', '**/*.json'
+        
+        // Trim trailing whitespace
+        trimTrailingWhitespace()
+        
+        // Ensure file ends with newline
+        endWithNewline()
+        
+        // Indent with spaces
+        indentWithSpaces(4)
+    }
+    
+    groovyGradle {
+        // Target Gradle files
+        target '**/*.gradle'
+        
+        // Use Groovy style guide
+        greclipse()
+        
+        // Indent with spaces
+        indentWithSpaces(4)
+        
+        // Ensure file ends with newline
+        endWithNewline()
+    }
+    
+    xml {
+        // Target XML files
+        target '**/*.xml'
+        
+        // Exclude generated files
+        targetExclude '**/build/**/*.xml'
+        
+        // Indent with spaces
+        indentWithSpaces(4)
+        
+        // Ensure file ends with newline
+        endWithNewline()
+    }
+}
+
+// Hook into the build process
+tasks.withType(JavaCompile) {
+    dependsOn 'spotlessApply'
+}
+
+// Add check task dependency
+check.dependsOn 'spotlessCheck'
+
+// Configure Spotless to run before build
+project.gradle.startParameter.taskNames.each { taskName ->
+    if (taskName.contains('build')) {
+        project.gradle.startParameter.taskNames.add(0, 'spotlessApply')
+    }
+}
+
+// Add Spotless to clean task
+clean.doFirst {
+    delete '.gradle/spotless-cache'
+}
